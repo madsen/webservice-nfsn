@@ -338,9 +338,9 @@ C<bug-WebService-NFSN AT rt.cpan.org>, or through the web interface
 at L<http://rt.cpan.org/Public/Bug/Report.html?Queue=WebService-NFSN>
 
 
-=head1 LICENCE AND COPYRIGHT
+=head1 LICENSE AND COPYRIGHT
 
-Copyright 2007 Christopher J. Madsen C<< <perl@cjmweb.net> >>
+Copyright 2007 Christopher J. Madsen
 
 This module is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself. See L<perlartistic>.

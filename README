@@ -28,6 +28,8 @@ DEPENDENCIES
   LWP                5.0
   URI
 
+Also, some of the example scripts use Data::Dumper to display the results.
+
 
 
 COPYRIGHT AND LICENCE

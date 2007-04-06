@@ -61,7 +61,7 @@ This document describes WebService::NFSN::Site version 0.01
 
     my $nfsn = WebService::NFSN->new($USER, $API_KEY);
     my $site = $nfsn->site($SHORT_NAME);
-    $site->addAlias('www.example.com');
+    $site->addAlias(alias => 'www.example.com');
 
 =head1 DESCRIPTION
 

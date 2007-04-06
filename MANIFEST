@@ -2,6 +2,7 @@ Build.PL
 Changes
 examples/accounts.pl
 examples/dns.pl
+examples/nfsn.pl
 lib/WebService/NFSN.pm
 lib/WebService/NFSN/Account.pm
 lib/WebService/NFSN/DNS.pm

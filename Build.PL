@@ -27,6 +27,9 @@ my $builder = My_Build->new(
       'HTTP::Request::Common' => 0,
       'URI'                   => 1,
   },
+  recommends => {
+      'Data::Dumper'  => 0,     # Some of the examples use this
+  },
   build_requires => {
       'FindBin'       => 0,
       'File::Spec'    => 0,

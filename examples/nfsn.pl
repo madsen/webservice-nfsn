@@ -11,7 +11,7 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See either the
 # GNU General Public License or the Artistic License for more details.
 #
-# Example of using the DNS API
+# Simple client script for using the NFSN API
 #---------------------------------------------------------------------
 
 use strict;
@@ -19,15 +19,28 @@ use warnings;
 use Data::Dumper;
 use WebService::NFSN;
 
-my ($user, $key, $domain) = @ARGV;
+my ($user, $key, $type, $id, $command, @parameters) = @ARGV;
 
-die "Usage: $0 USER API_KEY DOMAIN\n" unless defined $domain;
+die <<"" unless defined $command;
+Usage: $0 USER API_KEY TYPE ID COMMAND [PARAMETERS...]\n
+Examples:
+  $0 USER KEY account A1B2-C3D4E5F6 balance
+  $0 USER KEY account A1B2-C3D4E5F6 friendlyName NewName
+  $0 USER KEY dns example.com listRRs name www
+  $0 USER KEY dns example.com addRR name bob type A data 10.0.0.5
+  $0 USER KEY email example.com forward name dest_email 'to\@example.net'
+  $0 USER KEY member USER accounts
+  $0 USER KEY site SHORT_NAME addAlias alias www.example.com
 
 my $nfsn = WebService::NFSN->new($user, $key);
 
-my $rr = $nfsn->dns($domain)->listRRs;
+die "Unknown type $type\n" unless $nfsn->can($type);
+my $obj = $nfsn->$type($id);
+
+die "Unknown command $command\n" unless $obj->can($command);
+my $result = $obj->$command(@parameters);
 
 $Data::Dumper::Indent   = 1;
 $Data::Dumper::Sortkeys = 1;
 $Data::Dumper::Terse    = 1;
-print Dumper($rr);
+print Dumper($result);
