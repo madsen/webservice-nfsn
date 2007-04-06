@@ -46,10 +46,13 @@ eval {
   } # end foreach $account
 }; # end eval
 
+# This is pointless, since we're just duplicating what would happen
+# automatically if you removed the eval above.  But it demonstrates
+# how to catch exceptions.
 if ($@) {
   my $e = Exception::Class->caught('WebService::NFSN::NFSNError');
   unless ($e) { ref $@ ? $@->rethrow : die $@ }
 
-  print STDERR $e->debug . "\n";
-  $e->rethrow;
-}
+  print STDERR $e->as_string;
+  exit 1;
+} # end if error thrown from eval

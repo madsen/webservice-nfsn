@@ -25,18 +25,8 @@ die "Usage: $0 USER API_KEY DOMAIN\n" unless defined $domain;
 
 my $nfsn = WebService::NFSN->new($user, $key);
 
-eval {
-  my $rr = $nfsn->dns($domain)->listRRs;
+my $rr = $nfsn->dns($domain)->listRRs;
 
-  $Data::Dumper::Indent = 1;
-  $Data::Dumper::Terse  = 1;
-  print Dumper($rr);
-};
-
-if ($@) {
-  my $e = Exception::Class->caught('WebService::NFSN::NFSNError');
-  unless ($e) { ref $@ ? $@->rethrow : die $@ }
-
-  print STDERR $e->debug . "\n";
-  $e->rethrow;
-}
+$Data::Dumper::Indent = 1;
+$Data::Dumper::Terse  = 1;
+print Dumper($rr);

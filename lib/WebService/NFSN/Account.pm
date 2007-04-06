@@ -124,7 +124,8 @@ other members may have accounts with the same friendly name).
 
 =item C<< $account->status() >>
 
-Returns the account status, which provides general information about the health of the account.
+Returns the account status, which provides general information about
+the health of the account.
 
 The value returned is a hash reference with the following elements:
 

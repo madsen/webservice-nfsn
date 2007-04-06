@@ -26,9 +26,28 @@ use JSON::XS 'from_json';
 use LWP::UserAgent ();
 use UNIVERSAL 'isa';
 
+#=====================================================================
+# Package Global Variables:
+
+our $VERSION = '0.01';  # Also update VERSION section in documentation
+
+our $saltAlphabet
+    = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+our $ua = LWP::UserAgent->new(agent => "WebService-NFSN/$VERSION ");
+
+our @throw_parameters = (
+  show_trace     => 1,
+  ignore_package => __PACKAGE__,
+  ignore_class   => 'WebService::NFSN::Object'
+);
+
+#=====================================================================
+# Define exceptions:
+
 use Exception::Class (
   'WebService::NFSN::HTTPError' => {
-    fields => [ qw(response) ],
+    fields => [ qw(request response) ],
   },
 
     'WebService::NFSN::LWPError' => {
@@ -41,21 +60,15 @@ use Exception::Class (
     },
 );
 
-#=====================================================================
-# Package Global Variables:
+#---------------------------------------------------------------------
+# Include both the error & debug fields:
 
-our $VERSION = '0.01';
+sub WebService::NFSN::NFSNError::full_message
+{
+  my ($self) = @_;
 
-our $saltAlphabet
-    = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-our $ua = LWP::UserAgent->new(agent => "WebService::NFSN $VERSION ");
-
-our @throw_parameters = (
-  show_trace     => 1,
-  ignore_package => __PACKAGE__,
-  ignore_class   => 'WebService::NFSN::Object'
-);
+  $self->error . "\n" . $self->debug;
+} # end WebService::NFSN::NFSNError::full_message
 
 #=====================================================================
 # Package WebService::NFSN:
@@ -130,12 +143,14 @@ sub make_request
       error => delete($param->{error}),
       debug => delete($param->{debug}),
       nfsn  => $param,
+      request  => $req,
       response => $res,
       @throw_parameters
     ) if isa($param, 'HASH') and defined $param->{error};
 
     WebService::NFSN::LWPError->throw(
       error => sprintf('%s: %s', $res->code, $res->message),
+      request  => $req,
       response => $res,
       @throw_parameters
     );
@@ -176,6 +191,9 @@ This document describes WebService::NFSN version 0.01
 WebService::NFSN is a client library for NearlyFreeSpeech.NET's member
 API.  It is only useful to people who have websites hosted at
 NearlyFreeSpeech.NET.
+
+Much of this documentation was adapted from the original API
+documentation at L<https://api.nearlyfreespeech.net/>.
 
 =head1 INTERFACE
 
@@ -227,8 +245,9 @@ normally need this, but it may be handy for debugging.
 
 Most errors you might get from WebService::NFSN are
 L<Exception::Class> based objects.  WebService::NFSN::HTTPError is the
-abstract base class for these errors.  The C<response> field contains
-the original L<HTTP::Response> object.
+abstract base class for these errors.  The C<request> field contains
+the L<HTTP::Request> object that failed, and the C<response> field
+contains the original L<HTTP::Response> object.
 
 WebService::NFSN throws errors from two classes derived from
 WebService::NFSN::HTTPError:
@@ -301,9 +320,10 @@ None reported.
 
 The server's SSL certificate is not verified, so WebService::NFSN is
 vulnerable to a man-in-the-middle attack.  However, due to the design
-of NFSN's API, the attacker should only be able to monitor your
-queries and create fake responses.  The attacker should not be able to
-send altered requests to the real NFSN server.
+of NFSN's API, the attacker should only be able to monitor/suppress
+your queries and monitor/alter the responses.  The attacker should not
+be able to send (properly authenticated) altered requests to the real
+NFSN server.
 
 If someone knows how to have LWP verify the server's certificate,
 please let me know.
