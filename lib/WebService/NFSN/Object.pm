@@ -41,14 +41,22 @@ sub get_converter # ($class, $function)
 } # end get_converter
 
 #---------------------------------------------------------------------
+# Generate the code for an API module:
+
 sub _define
 {
   my ($class, %p) = @_;
 
   ## no critic ProhibitStringyEval
 
+  #...................................................................
+  # Create the object_type method for classifying objects:
+
   eval "package $class; sub object_type { '$p{type}' }";
   die $@ if $@;
+
+  #...................................................................
+  # Create an accessor method for each property:
 
   foreach my $propType (qw(rw ro wo)) {
     my $properties = $p{$propType};
@@ -70,6 +78,9 @@ END PROPERTY
       die $@ if $@;
     } # end foreach $property
   } # end foreach $propType
+
+  #...................................................................
+  # Create an object method for each API method:
 
   if (my $methods = $p{methods}) {
     while (my ($method, $params) = each %$methods) {
