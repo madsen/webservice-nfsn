@@ -331,11 +331,12 @@ please let me know.
 
 =head1 AUTHOR
 
-Christopher J. Madsen  C<< <perl AT cjmweb.net> >>
+Christopher J. Madsen  S<< C<< <perl AT cjmweb.net> >> >>
 
 Please report any bugs or feature requests to
-C<bug-WebService-NFSN AT rt.cpan.org>, or through the web interface
-at L<http://rt.cpan.org/Public/Bug/Report.html?Queue=WebService-NFSN>
+S<< C<< <bug-WebService-NFSN AT rt.cpan.org> >> >>,
+or through the web interface at
+L<http://rt.cpan.org/Public/Bug/Report.html?Queue=WebService-NFSN>
 
 
 =head1 LICENSE AND COPYRIGHT
