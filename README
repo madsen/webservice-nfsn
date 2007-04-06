@@ -1,0 +1,38 @@
+$$Id$
+WebService-NFSN version $%v%$
+
+WebService::NFSN is a client library for NearlyFreeSpeech.NET's
+member API (https://api.nearlyfreespeech.net/).  It is only useful
+to people who have websites hosted at NearlyFreeSpeech.NET.
+
+
+
+INSTALLATION
+
+To install this module, run the following commands:
+
+    perl Build.PL
+    ./Build
+    ./Build test
+    ./Build install
+
+
+
+DEPENDENCIES
+
+  Package           Minimum Version
+  ----------------- ---------------
+  Digest::SHA1
+  Exception::Class
+  JSON::XS           1.0
+  LWP                5.0
+  URI
+
+
+
+COPYRIGHT AND LICENCE
+
+Copyright 2007 Christopher J. Madsen
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

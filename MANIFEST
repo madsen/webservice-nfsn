@@ -1,0 +1,20 @@
+Build.PL
+Changes
+examples/accounts.pl
+examples/dns.pl
+lib/WebService/NFSN.pm
+lib/WebService/NFSN/Account.pm
+lib/WebService/NFSN/DNS.pm
+lib/WebService/NFSN/Email.pm
+lib/WebService/NFSN/Member.pm
+lib/WebService/NFSN/Object.pm
+lib/WebService/NFSN/Site.pm
+Makefile.PL
+MANIFEST
+META.yml			# Will be created by "make dist"
+My_Build.pm
+README
+t/00.load.t
+t/perlcritic.t
+t/pod-coverage.t
+t/pod.t
