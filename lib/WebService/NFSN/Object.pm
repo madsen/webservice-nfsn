@@ -118,9 +118,7 @@ sub GET_request
 {
   my ($self, $property) = @_;
 
-  my $res = $self->make_request(GET $self->make_uri($property));
-
-  return $res->content;
+  return $self->make_request(GET $self->make_uri($property));
 } # end GET_request
 
 #---------------------------------------------------------------------
@@ -128,10 +126,8 @@ sub PUT_request
 {
   my ($self, $property, $value) = @_;
 
-  my $res = $self->make_request(PUT $self->make_uri($property),
-                                Content => $value);
-
-  return $res->content;
+  return $self->make_request(PUT $self->make_uri($property),
+                             Content => $value);
 } # end PUT_request
 
 #---------------------------------------------------------------------
@@ -139,11 +135,7 @@ sub POST_request
 {
   my ($self, $method, %param) = @_;
 
-  my $res = $self->make_request(
-    POST $self->make_uri($method), \%param
-  );
-
-  return $res->content;
+  return $self->make_request(POST $self->make_uri($method), \%param);
 } # end POST_request
 
 #---------------------------------------------------------------------
@@ -151,8 +143,10 @@ sub make_request
 {
   my $self = shift @_;
 
-  $self->{manager}->make_request(@_);
-}
+  my $res = $self->{manager}->make_request(@_);
+
+  return $res->content;
+} # end make_request
 
 #---------------------------------------------------------------------
 sub make_uri
