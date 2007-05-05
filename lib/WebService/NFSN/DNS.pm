@@ -189,8 +189,8 @@ Most DNS methods take 3 parameters:
 =item name
 
 Name of the resource record.  This does not include the C<$DOMAIN>
-associated with the Site object; C<www> means C<www.example.com> (if
-the Site object is for C<example.com>).  The empty string refers to the
+associated with the C<DNS> object; C<www> means C<www.example.com> (if
+the C<DNS> object is for C<example.com>).  The empty string refers to the
 domain itself.
 
 =item type

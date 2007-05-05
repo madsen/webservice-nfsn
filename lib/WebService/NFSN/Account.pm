@@ -105,7 +105,7 @@ nonrefundable funds.
 =item C<< $account->balanceHigh() >>
 
 Returns the highest account balance ever recorded for this account. This can
-be useful in conjunction with the balance property to determine the
+be useful in conjunction with the C<balance> property to determine the
 relative health of the account (for example, as a percentage).
 
 =item C<< $account->friendlyName( [$NEW_NAME] ) >>
@@ -131,17 +131,17 @@ The value returned is a hash reference with the following elements:
 
 =over
 
-=item status
+=item C<status>
 
-    A text string describing the status.
+A text string describing the status.
 
-=item short
+=item C<short>
 
-    A 2-4 character uppercase abbreviation of the status.
+A 2-4 character uppercase abbreviation of the status.
 
-=item color
+=item C<color>
 
-    The recommended HTML color for displaying the status.
+The recommended HTML color for displaying the status.
 
 =back
 
@@ -161,14 +161,14 @@ reference of short names).
 This adds a balance warning to the account, so that an email will be
 sent when the balance drops below C<$BALANCE>.
 
-The C<balance> parameter must be a positive dollar value specified to at
+C<$BALANCE> must be a positive dollar value specified to at
 most two decimal digits (one cent).
 
 =item C<< $account->removeWarning(balance => $BALANCE) >>
 
 Removes an existing balance warning.
 
-The C<balance> parameter must be the dollar value of an existing
+C<$BALANCE> must be the dollar value of an existing
 balance warning, specified as a decimal number.
 
 =back
