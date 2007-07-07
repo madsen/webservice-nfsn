@@ -29,7 +29,7 @@ use UNIVERSAL 'isa';
 #=====================================================================
 # Package Global Variables:
 
-our $VERSION = '0.01';  # Also update VERSION section in documentation
+our $VERSION = '0.02';  # Also update VERSION section in documentation
 
 our $saltAlphabet
     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -176,7 +176,7 @@ WebService::NFSN - Client for the NearlyFreeSpeech.NET API
 
 =head1 VERSION
 
-This document describes WebService::NFSN version 0.01
+This document describes WebService::NFSN version 0.02
 
 
 =head1 SYNOPSIS
@@ -285,17 +285,31 @@ set up NTP on your computer.
 =head2 Simple Errors
 
 The following errors do not use Exception::Class, because you should
-never see them unless you have an error in your program.
+never see them unless you have an error in your program.  They are
+classified like Perl's built-in diagnostics (L<perldiag>):
+
+     (S) A severe warning
+     (F) A fatal error (trappable)
 
 =over
 
+=item C<< Missing required "%s" parameter for %s >>
+
+(F) You failed to supply a parameter required by the method you called.
+
+=item C<< "%s" is not a parameter of %s >>
+
+(S) You supplied a parameter not recognized by the method you called.
+This is only a warning; the parameter is still passed along to NFSN
+(in case it was added in a newer version of the API).
+
 =item C<< %s is read-only >>
 
-You tried to modify a read-only property.
+(F) You tried to modify a read-only property.
 
 =item C<< %s is write-only >>
 
-You tried to read a write-only property.
+(F) You tried to read a write-only property.
 
 =back
 
