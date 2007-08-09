@@ -27,13 +27,13 @@ use base 'WebService::NFSN::Object';
 #=====================================================================
 # Package Global Variables:
 
-our $VERSION = '0.01';
+our $VERSION = '0.03';  # Also update VERSION section in documentation
 
 #=====================================================================
 BEGIN {
   __PACKAGE__->_define(
     type => 'member',
-    ro => [qw(accounts:JSON)],
+    ro => [qw(accounts:JSON sites:JSON)],
   );
 } # end BEGIN
 
@@ -50,7 +50,7 @@ WebService::NFSN::Member - Access NFSN member API
 
 =head1 VERSION
 
-This document describes WebService::NFSN::Member version 0.01
+This document describes WebService::NFSN::Member version 0.03
 
 
 =head1 SYNOPSIS
@@ -85,8 +85,13 @@ S<< C<< $member = WebService::NFSN::Member->new($nfsn, $USER) >> >>.
 
 =item C<< $member->accounts() >>
 
-Returns an array reference containing the account ID of each account
-owned by this member.
+Returns a list of all accounts owned by this member (as an array
+reference of account IDs).
+
+=item C<< $member->sites() >>
+
+Returns a list of all sites owned by this member (as an array
+reference of short names).
 
 =back
 

@@ -1,5 +1,8 @@
 Revision history for WebService-NFSN
 
+0.03   Aug 9 2007
+	- Added the sites property to Member objects
+
 0.02   Jul 7 2007
 	- Now does parameter validation on method calls
 
