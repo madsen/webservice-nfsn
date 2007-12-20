@@ -38,7 +38,12 @@ die "Unknown type $type\n" unless $nfsn->can($type);
 my $obj = $nfsn->$type($id);
 
 die "Unknown command $command\n" unless $obj->can($command);
-my $result = $obj->$command(@parameters);
+my $result = eval { $obj->$command(@parameters); };
+
+if ($@) {
+  print STDERR $nfsn->last_response->as_string;
+  die $@;
+}
 
 $Data::Dumper::Indent   = 1;
 $Data::Dumper::Sortkeys = 1;
