@@ -1,5 +1,8 @@
 Revision history for WebService-NFSN
 
+0.04   Dec 19 2007
+	- Added the listForwards method to Email objects
+
 0.03   Aug 9 2007
 	- Added the sites property to Member objects
 

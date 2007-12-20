@@ -20,19 +20,21 @@ package WebService::NFSN::Email;
 
 use 5.006;
 use strict;
+use JSON::XS 'from_json';
 
 use base 'WebService::NFSN::Object';
 
 #=====================================================================
 # Package Global Variables:
 
-our $VERSION = '0.01';
+our $VERSION = '0.04';  # Also update VERSION section in documentation
 
 #=====================================================================
 BEGIN {
   __PACKAGE__->_define(
     type => 'email',
     methods => {
+      'listForwards:JSON' => [],
       removeForward => [qw(forward)],
       setForward    => [qw(forward dest_email)],
     }
@@ -52,7 +54,7 @@ WebService::NFSN::Email - Access NFSN email forwarding
 
 =head1 VERSION
 
-This document describes WebService::NFSN::Email version 0.01
+This document describes WebService::NFSN::Email version 0.04
 
 
 =head1 SYNOPSIS
@@ -89,6 +91,13 @@ None.
 =head2 Methods
 
 =over
+
+=item C<< $email->listForwards() >>
+
+Returns a hash reference listing all forwarding instructions for this
+domain.  For each entry, the key is the username and the value is the
+forwarding address for that name.  The special username C<*>
+represents the "Everything Else" entry.
 
 =item C<< $email->removeForward(forward => $NAME) >>
 

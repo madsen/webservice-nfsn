@@ -29,7 +29,7 @@ use UNIVERSAL 'isa';
 #=====================================================================
 # Package Global Variables:
 
-our $VERSION = '0.03';  # Also update VERSION section in documentation
+our $VERSION = '0.04';  # Also update VERSION section in documentation
 
 our $saltAlphabet
     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -176,7 +176,7 @@ WebService::NFSN - Client for the NearlyFreeSpeech.NET API
 
 =head1 VERSION
 
-This document describes WebService::NFSN version 0.03
+This document describes WebService::NFSN version 0.04
 
 
 =head1 SYNOPSIS
