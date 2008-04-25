@@ -4,7 +4,7 @@ package WebService::NFSN::Email;
 #
 # Copyright 2007 Christopher J. Madsen
 #
-# Author: Christopher J. Madsen <cjm@pobox.com>
+# Author: Christopher J. Madsen <perl@cjmweb.net>
 # Created:  3 Apr 2007
 #
 # This program is free software; you can redistribute it and/or modify
@@ -20,14 +20,14 @@ package WebService::NFSN::Email;
 
 use 5.006;
 use strict;
-use JSON::XS 'from_json';
+use warnings;
 
 use base 'WebService::NFSN::Object';
 
 #=====================================================================
 # Package Global Variables:
 
-our $VERSION = '0.04';  # Also update VERSION section in documentation
+our $VERSION = '0.05';
 
 #=====================================================================
 BEGIN {
@@ -54,7 +54,7 @@ WebService::NFSN::Email - Access NFSN email forwarding
 
 =head1 VERSION
 
-This document describes WebService::NFSN::Email version 0.04
+This document describes $Id$
 
 
 =head1 SYNOPSIS

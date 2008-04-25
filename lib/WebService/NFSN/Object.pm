@@ -3,7 +3,7 @@ package WebService::NFSN::Object;
 #
 # Copyright 2007 Christopher J. Madsen
 #
-# Author: Christopher J. Madsen <cjm@pobox.com>
+# Author: Christopher J. Madsen <perl@cjmweb.net>
 # Created:  3 Apr 2007
 # $Id$
 #
@@ -21,21 +21,22 @@ package WebService::NFSN::Object;
 use 5.006;
 use Carp;
 use strict;
+use warnings;
 use HTTP::Request::Common qw(GET POST PUT);
 use URI ();
+use WebService::NFSN 0.05 ();   # Just make sure it's loaded
 
 #=====================================================================
 # Package Global Variables:
 
-our $VERSION = '0.02';
+our $VERSION = '0.05';
 
 #=====================================================================
-sub get_converter # ($class, $function)
+sub get_converter # ($function)
 {
-  my $convert = ($_[1] =~ s/:JSON$// ? 'from_json' : '');
-
-  die "$_[0]::$convert not defined"
-      if $convert and not defined(&{"$_[0]::$convert"});
+  my $convert = ($_[0] =~ s/:JSON$//
+                 ? 'WebService::NFSN::decode_json'
+                 : '');
 
   return $convert;
 } # end get_converter
@@ -64,7 +65,7 @@ sub _define
     next unless $properties;
 
     foreach my $property (@$properties) {
-      my $convert = get_converter($class, $property);
+      my $convert = get_converter($property);
 
       eval <<"END PROPERTY";
 package $class;
@@ -84,7 +85,7 @@ END PROPERTY
 
   if (my $methods = $p{methods}) {
     while (my ($method, $params) = each %$methods) {
-      my $convert = get_converter($class, $method);
+      my $convert = get_converter($method);
 
       # Process method prototype:
       my (%accepted, @required);

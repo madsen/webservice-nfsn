@@ -19,17 +19,16 @@ package WebService::NFSN;
 #---------------------------------------------------------------------
 
 use 5.006;
-use warnings;
 use strict;
+use warnings;
 use Digest::SHA1 'sha1_hex';
-use JSON::XS 'from_json';
 use LWP::UserAgent ();
 use UNIVERSAL 'isa';
 
 #=====================================================================
 # Package Global Variables:
 
-our $VERSION = '0.04';  # Also update VERSION section in documentation
+our $VERSION = '0.05';
 
 our $saltAlphabet
     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -41,6 +40,25 @@ our @throw_parameters = (
   ignore_package => __PACKAGE__,
   ignore_class   => 'WebService::NFSN::Object'
 );
+
+#=====================================================================
+# Load a JSON package and define our decode_json function:
+
+BEGIN
+{
+  eval "use JSON::XS ();";
+
+  if ($@) {
+    # Can't find JSON::XS, try JSON (2.0 or later):
+    eval "use JSON qw(decode_json); 1" or die $@;
+  } else {
+    if ($JSON::XS::VERSION >= 2) {
+      *decode_json = \&JSON::XS::decode_json;
+    } else {
+      *decode_json = \&JSON::XS::from_json; # old name for decode_json
+    } # end else found JSON::XS prior to version 2.0
+  } # end else we were able to load JSON::XS
+} # end BEGIN
 
 #=====================================================================
 # Define exceptions:
@@ -120,13 +138,16 @@ sub make_request
 {
   my ($self, $req) = @_;
 
+  # Collect member name & request URI:
   my $login = $self->{login};
   my $uri = $req->uri->path;
 
+  # Generate a random 16 character salt value:
   my $salt = join('', map {
     substr($saltAlphabet, int(rand(length $saltAlphabet)), 1)
   } 1 .. 16);
 
+  # Generate the NFSN authentication hash:
   my $body_hash = sha1_hex($req->content);
 
   my $time = time;
@@ -135,10 +156,13 @@ sub make_request
 
   $req->header('X-NFSN-Authentication' => "$login;$time;$salt;$hash");
 
+  # Send the request to the NFSN API server:
   my $res = $self->{last_response} = $ua->request($req);
 
+  # Throw an exception if there was an error:
   if ($res->is_error) {
-    my $param = eval { from_json($res->content) };
+    my $param = eval { decode_json($res->content) };
+    # Throw NFSNError if we decoded the response successfully:
     WebService::NFSN::NFSNError->throw(
       error => delete($param->{error}),
       debug => delete($param->{debug}),
@@ -148,6 +172,7 @@ sub make_request
       @throw_parameters
     ) if isa($param, 'HASH') and defined $param->{error};
 
+    # Otherwise, throw LWPError:
     WebService::NFSN::LWPError->throw(
       error => sprintf('%s: %s', $res->code, $res->message),
       request  => $req,
@@ -156,6 +181,7 @@ sub make_request
     );
   } # end if error
 
+  # Return the successful response:
   return $res;
 } # end make_request
 
@@ -176,7 +202,7 @@ WebService::NFSN - Client for the NearlyFreeSpeech.NET API
 
 =head1 VERSION
 
-This document describes WebService::NFSN version 0.04
+This document describes $Id$
 
 
 =head1 SYNOPSIS

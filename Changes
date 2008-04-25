@@ -1,16 +1,20 @@
 Revision history for WebService-NFSN
 
-0.04   Dec 19 2007
+0.05   April 25, 2008
+	- Now compatible with JSON::XS 2 (but still works with 1.x).
+	  You can also substitute pure-Perl JSON 2, but it's slower.
+
+0.04   December 19, 2007
 	- Added the listForwards method to Email objects
 
-0.03   Aug 9 2007
+0.03   August 9, 2007
 	- Added the sites property to Member objects
 
-0.02   Jul 7 2007
+0.02   July 7, 2007
 	- Now does parameter validation on method calls
 
 	    Omitting a required parameter now generates a client-side
 	    error.  Using an unknown parameter generates a warning.
 
-0.01   Apr 6 2007
+0.01   April 6, 2007
 	- Initial release

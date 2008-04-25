@@ -20,6 +20,7 @@ my $builder = My_Build->new(
   dist_author        => 'Christopher J. Madsen <perl@cjmweb.net>',
   dist_version_from  => 'lib/WebService/NFSN.pm',
   requires => {
+      'perl'                  => '5.006',
       'Digest::SHA1'          => 0,
       'Exception::Class'      => 0,
       'JSON::XS'              => 1,

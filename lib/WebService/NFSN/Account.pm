@@ -4,7 +4,7 @@ package WebService::NFSN::Account;
 #
 # Copyright 2007 Christopher J. Madsen
 #
-# Author: Christopher J. Madsen <cjm@pobox.com>
+# Author: Christopher J. Madsen <perl@cjmweb.net>
 # Created:  3 Apr 2007
 #
 # This program is free software; you can redistribute it and/or modify
@@ -20,14 +20,14 @@ package WebService::NFSN::Account;
 
 use 5.006;
 use strict;
-use JSON::XS 'from_json';
+use warnings;
 
 use base 'WebService::NFSN::Object';
 
 #=====================================================================
 # Package Global Variables:
 
-our $VERSION = '0.01';
+our $VERSION = '0.05';
 
 #=====================================================================
 BEGIN {
@@ -56,7 +56,7 @@ WebService::NFSN::Account - Access NFSN account information
 
 =head1 VERSION
 
-This document describes WebService::NFSN::Account version 0.01
+This document describes $Id$
 
 
 =head1 SYNOPSIS
