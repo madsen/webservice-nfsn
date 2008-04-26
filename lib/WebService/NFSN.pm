@@ -46,6 +46,8 @@ our @throw_parameters = (
 
 BEGIN
 {
+  ## no critic ProhibitStringyEval
+
   eval "use JSON::XS ();";
 
   if ($@) {

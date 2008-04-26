@@ -10,7 +10,7 @@ plan skip_all => "Test::Pod::Coverage 1.04 required for testing POD coverage"
 
 #---------------------------------------------------------------------
 my @private = map { qr/^$_/ } qw(
-  make_request object_type root_url
+  decode_json make_request object_type root_url
 );
 
 my %parameters = ( also_private => \@private );
