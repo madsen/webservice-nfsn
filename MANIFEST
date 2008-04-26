@@ -13,9 +13,10 @@ lib/WebService/NFSN/Site.pm
 Makefile.PL
 MANIFEST
 META.yml			# Will be created by "make dist"
-My_Build.pm
 README
 t/00.load.t
 t/perlcritic.t
 t/pod-coverage.t
 t/pod.t
+tools/My_Build.pm
+tools/README.tt
