@@ -24,7 +24,8 @@ use Module::Build ();
 
 # Use Module::Build::DistVersion if we can get it:
 BEGIN {
-  eval q{ use base 'Module::Build::DistVersion'; };
+  eval q{ use Module::Build::DistVersion 0.03;
+          use base 'Module::Build::DistVersion'; };
   eval q{ use base 'Module::Build'; } if $@;
   die $@ if $@;
 }
