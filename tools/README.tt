@@ -25,7 +25,7 @@ DEPENDENCIES
   ----------------- ---------------
   Digest::SHA1
   Exception::Class
-  JSON::XS           1.0
+  JSON::XS           1.0  (JSON 2.0 is also acceptable)
   LWP                5.0
   URI
 
