@@ -28,7 +28,7 @@ use UNIVERSAL 'isa';
 #=====================================================================
 # Package Global Variables:
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 our $saltAlphabet
     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -164,15 +164,26 @@ sub make_request
   # Throw an exception if there was an error:
   if ($res->is_error) {
     my $param = eval { decode_json($res->content) };
+
     # Throw NFSNError if we decoded the response successfully:
-    WebService::NFSN::NFSNError->throw(
-      error => delete($param->{error}),
-      debug => delete($param->{debug}),
-      nfsn  => $param,
-      request  => $req,
-      response => $res,
-      @throw_parameters
-    ) if isa($param, 'HASH') and defined $param->{error};
+    if (isa($param, 'HASH') and defined $param->{error}) {
+      # If bad timestamp, list the dates:
+      my $debug = delete $param->{debug};
+      if ($debug and
+          $debug eq "The authentication timestamp is out of range.") {
+        $debug .= ("\n Client request date:  " . gmtime($time) .
+                   "\n Server response date: " . $res->header('Date'));
+      } # end if authentication timestamp out of range
+
+      WebService::NFSN::NFSNError->throw(
+        error => delete($param->{error}),
+        debug => $debug,
+        nfsn  => $param,
+        request  => $req,
+        response => $res,
+        @throw_parameters
+      );
+    } # end if throwing NFSNError
 
     # Otherwise, throw LWPError:
     WebService::NFSN::LWPError->throw(
