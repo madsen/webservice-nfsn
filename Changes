@@ -1,5 +1,11 @@
 Revision history for WebService-NFSN
 
+0.06   August 28, 2008
+	- Added the addSite method to Account objects
+
+	- If the authentication timestamp is out of range, appends both
+	  the client's & server's time to the debug field of the error.
+
 0.05   April 25, 2008
 	- Now compatible with JSON::XS 2 (but still works with 1.x).
 	  You can also substitute pure-Perl JSON 2, but it's slower.
