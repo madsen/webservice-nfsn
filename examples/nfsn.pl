@@ -41,8 +41,10 @@ die "Unknown command $command\n" unless $obj->can($command);
 my $result = eval { $obj->$command(@parameters); };
 
 if ($@) {
-  print STDERR $nfsn->last_response->as_string;
-  die $@;
+  my $err = $@;
+  my $res = $nfsn->last_response;
+  print STDERR $res->as_string if $res;
+  die $err;
 }
 
 $Data::Dumper::Indent   = 1;
