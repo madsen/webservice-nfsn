@@ -28,7 +28,7 @@ use UNIVERSAL 'isa';
 #=====================================================================
 # Package Global Variables:
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 our $saltAlphabet
     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

@@ -27,7 +27,7 @@ use base 'WebService::NFSN::Object';
 #=====================================================================
 # Package Global Variables:
 
-our $VERSION = '0.05';
+our $VERSION = '0.07';
 
 #=====================================================================
 BEGIN {
@@ -36,7 +36,7 @@ BEGIN {
     ro   => [qw(serial)],
     rw   => [qw(expire minTTL refresh retry)],
     methods => {
-      addRR          => [qw(name type data)],
+      addRR          => [qw(name type data ttl?)],
       'listRRs:JSON' => [qw(name? type? data?)],
       removeRR       => [qw(name type data)],
       updateSerial   => [],
@@ -209,11 +209,14 @@ These are the methods:
 
 =over
 
-=item C<< $dns->addRR(name => $NAME, type => $TYPE, data => $DATA) >>
+=item C<< $dns->addRR(name => $NAME, type => $TYPE, data => $DATA [,ttl => $TTL]) >>
 
 Adds a new resource record to the domain's DNS. Any record that can be
 added through the member interface can be added through this method as
 well, including the SPF Email Protection record.
+
+The optional C<ttl> parameter is the Time To Live value (in seconds)
+for the new record.  It defaults to 3600 (1 hour).
 
 =item C<< $dns->listRRs([name => $NAME,] [type => $TYPE,] [data => $DATA]) >>
 
