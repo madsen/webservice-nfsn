@@ -21,6 +21,7 @@ package WebService::NFSN;
 use 5.006;
 use strict;
 use warnings;
+use Carp qw(carp croak);
 use Digest::SHA1 'sha1_hex';
 use LWP::UserAgent ();
 use UNIVERSAL 'isa';
@@ -28,7 +29,7 @@ use UNIVERSAL 'isa';
 #=====================================================================
 # Package Global Variables:
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 our $saltAlphabet
     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -96,6 +97,43 @@ sub WebService::NFSN::NFSNError::full_message
 sub new
 {
   my ($class, $login, $apiKey) = @_;
+
+  # If we didn't get login information, try reading it from .nfsn-api:
+  if (@_ == 1) {
+    require File::Spec;
+
+    # Try the current directory, then the home directory:
+    my $filename = '.nfsn-api';
+    $filename = File::Spec->catfile($ENV{HOME}, $filename)
+        if (not -e $filename and $ENV{HOME} and -d $ENV{HOME});
+
+    # If we found it, read the file:
+    if (not -e $filename) {
+      carp("Unable to locate $filename");
+    } else {
+      # Read in the file:
+      local $_;
+      open(my $in, '<', $filename) or croak("Can't open $filename: $!");
+      my $contents = '';
+      $contents .= $_ while <$in>;
+      close $in or croak("Error closing $filename: $!");
+
+      # Parse the JSON object:
+      my $hashRef = eval { decode_json($contents) };
+      croak("Error parsing $filename: $@") if $@;
+      croak("$filename did not contain a JSON object")
+          unless isa($hashRef, 'HASH');
+
+      croak(qq'$filename did not define "login"')
+          unless defined ($login  = $hashRef->{login});
+      croak(qq'$filename did not define "api-key"')
+          unless defined ($apiKey = $hashRef->{'api-key'});
+    } # end else -e $filename
+  } # end if login & apiKey were not supplied
+
+  # Make sure we have all our parameters:
+  croak("You must supply a login")    unless defined $login;
+  croak("You must supply an API key") unless defined $apiKey;
 
   return bless { login => $login,
                  apiKey => $apiKey,
@@ -225,6 +263,8 @@ This document describes $Id$
     my $nfsn = WebService::NFSN->new($USER, $API_KEY);
     my $balance = $nfsn->account($ACCOUNT_ID)->balance;
 
+    $nfsn = WebService::NFSN->new; # Get credentials from ~/.nfsn-api
+
 =head1 DESCRIPTION
 
 WebService::NFSN is a client library for NearlyFreeSpeech.NET's member
@@ -238,11 +278,20 @@ documentation at L<https://api.nearlyfreespeech.net/>.
 
 =over
 
-=item C<< $nfsn = WebService::NFSN->new($USER, $API_KEY) >>
+=item C<< $nfsn = WebService::NFSN->new( [$USER, $API_KEY] ) >>
 
 This constructs a new API manager object.  C<$USER> is your NFSN
 member login.  You can get your C<$API_KEY> by making a Secure Support
 Request at L<https://members.nearlyfreespeech.net/support/request>.
+
+If you call new without parameters, it will look for a file named
+F<.nfsn-api> in the current directory and (if not found there) in your
+home directory.  The file must contain a JSON object that defines the
+keys C<login> and C<api-key>.  Any additional keys are ignored.
+
+Example F<.nfsn-api> file:
+
+ { "login": "USER",  "api-key": "API_KEY" }
 
 =item C<< $nfsn->account($ACCOUNT_ID) >>
 
@@ -349,6 +398,40 @@ This is only a warning; the parameter is still passed along to NFSN
 =item C<< %s is write-only >>
 
 (F) You tried to read a write-only property.
+
+=item C<< Can't open %s >>
+
+(F) There was an error when opening the .nfsn-api file.
+
+=item C<< Error closing %s >>
+
+(F) There was an error when closing the .nfsn-api file.
+
+=item C<< Error parsing .nfsn-api: %s >>
+
+(F) .nfsn-api did not contain valid JSON.
+
+=item C<< .nfsn-api did not contain a JSON object >>
+
+(F) .nfsn-api did not contain a JSON object (it must begin with C<{>).
+
+=item C<< .nfsn-api did not define %s >>
+
+(F) .nfsn-api must include the keys C<login> and C<api-key>.
+
+=item C<< You must supply a login >>
+
+(F) You didn't pass a member login to the constructor, and no
+F<.nfsn-api> file was found.
+
+=item C<< You must supply an API key >>
+
+(F) You passed a login name to the constructor, but no API key.
+
+=item C<< Unable to locate .nfsn-api >>
+
+(S) You didn't pass login credentials to the constructor, and it
+couldn't find a F<.nfsn-api> file to load.
 
 =back
 

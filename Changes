@@ -1,5 +1,9 @@
 Revision history for WebService-NFSN
 
+0.08   September 28, 2008
+	- The constructor now reads login credentials from .nfsn-api
+	  if you don't supply them as parameters.
+
 0.07   September 27, 2008
 	- Added the optional ttl parameter to the DNS addRR method.
 
