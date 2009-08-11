@@ -438,7 +438,9 @@ couldn't find a F<.nfsn-api> file to load.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-WebService::NFSN requires no configuration files or environment variables.
+WebService::NFSN has an optional configuration file named
+F<.nfsn-api>.  See L<the constructor|"INTERFACE"> for the details.
+The home directory is specified by C<$ENV{HOME}>.
 
 
 =head1 DEPENDENCIES
