@@ -22,7 +22,7 @@ use 5.006;
 use strict;
 use warnings;
 use Carp qw(carp croak);
-use Digest::SHA1 'sha1_hex';
+use Digest::SHA 'sha1_hex';
 use LWP::UserAgent ();
 use UNIVERSAL 'isa';
 
@@ -445,7 +445,7 @@ The home directory is specified by C<$ENV{HOME}>.
 
 =head1 DEPENDENCIES
 
-L<Digest::SHA1>, L<Exception::Class>, L<JSON::XS>, L<LWP> (requires
+L<Digest::SHA>, L<Exception::Class>, L<JSON::XS>, L<LWP> (requires
 C<https> support), and L<URI>.  These are all available from CPAN.
 
 
