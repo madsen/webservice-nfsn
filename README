@@ -1,5 +1,4 @@
-[% # $Id$ %]
-WebService-NFSN version [%version%], released [%date%]
+WebService-NFSN version {{$version}}, released {{$date}}
 
 
 WebService::NFSN is a client library for NearlyFreeSpeech.NET's member
@@ -21,29 +20,23 @@ To install this module, run the following commands:
 
 DEPENDENCIES
 
-  Package           Minimum Version
-  ----------------- ---------------
-  Digest::SHA1
-  Exception::Class
-  JSON::XS           1.0  (JSON 2.0 is also acceptable)
-  LWP                5.0
-  URI
+{{ my $deps = $t->dependency_list;
+   $deps =~ s/^(\s*JSON::XS\s.+)/$1  (JSON 2.0 is also acceptable)/m;
+   $deps;
+}}
 
 Also, some of the example scripts use Data::Dumper to display the results.
 
 
 
 CHANGES
-    Here's what's new in version [%version%] of WebService-NFSN:
+    Here's what's new in version {{$version}} of WebService-NFSN:
     (See the file "Changes" for the full revision history.)
 
-[%changes%]
+{{$changes}}
 
 
 
 COPYRIGHT AND LICENCE
 
-Copyright 2007-2008 Christopher J. Madsen
-
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+{{ local $_ = $zilla->license->notice; chomp; $_ }}

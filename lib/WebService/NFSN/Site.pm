@@ -1,8 +1,7 @@
 #---------------------------------------------------------------------
-# $Id$
 package WebService::NFSN::Site;
 #
-# Copyright 2007 Christopher J. Madsen
+# Copyright 2010 Christopher J. Madsen
 #
 # Author: Christopher J. Madsen <perl@cjmweb.net>
 # Created:  3 Apr 2007
@@ -15,7 +14,7 @@ package WebService::NFSN::Site;
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See either the
 # GNU General Public License or the Artistic License for more details.
 #
-# Access the NearlyFreeSpeech.NET Site API
+# ABSTRACT: Access NFSN site API
 #---------------------------------------------------------------------
 
 use 5.006;
@@ -27,7 +26,7 @@ use base 'WebService::NFSN::Object';
 #=====================================================================
 # Package Global Variables:
 
-our $VERSION = '0.05';
+our $VERSION = '0.09';
 
 #=====================================================================
 BEGIN {
@@ -46,15 +45,6 @@ BEGIN {
 1;
 
 __END__
-
-=head1 NAME
-
-WebService::NFSN::Site - Access NFSN site API
-
-=head1 VERSION
-
-This document describes $Id$
-
 
 =head1 SYNOPSIS
 
@@ -111,3 +101,8 @@ the site.
 =head1 SEE ALSO
 
 L<WebService::NFSN>
+
+=for Pod::Loom-omit
+CONFIGURATION AND ENVIRONMENT
+INCOMPATIBILITIES
+BUGS AND LIMITATIONS

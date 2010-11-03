@@ -1,11 +1,10 @@
 #---------------------------------------------------------------------
 package WebService::NFSN;
 #
-# Copyright 2007 Christopher J. Madsen
+# Copyright 2010 Christopher J. Madsen
 #
 # Author: Christopher J. Madsen <perl@cjmweb.net>
 # Created: 3 Apr 2007
-# $Id$
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the same terms as Perl itself.
@@ -15,7 +14,7 @@ package WebService::NFSN;
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See either the
 # GNU General Public License or the Artistic License for more details.
 #
-# Client for the NearlyFreeSpeech.NET API
+# ABSTRACT: Client for the NearlyFreeSpeech.NET API
 #---------------------------------------------------------------------
 
 use 5.006;
@@ -29,7 +28,7 @@ use UNIVERSAL 'isa';
 #=====================================================================
 # Package Global Variables:
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 our $saltAlphabet
     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -247,15 +246,6 @@ sub root_url      { $_[0]{url}           }
 
 __END__
 
-=head1 NAME
-
-WebService::NFSN - Client for the NearlyFreeSpeech.NET API
-
-=head1 VERSION
-
-This document describes $Id$
-
-
 =head1 SYNOPSIS
 
     use WebService::NFSN;
@@ -465,45 +455,3 @@ NFSN server.
 
 If someone knows how to have LWP verify the server's certificate,
 please let me know.
-
-
-=head1 AUTHOR
-
-Christopher J. Madsen  S<< C<< <perl AT cjmweb.net> >> >>
-
-Please report any bugs or feature requests to
-S<< C<< <bug-WebService-NFSN AT rt.cpan.org> >> >>,
-or through the web interface at
-L<http://rt.cpan.org/Public/Bug/Report.html?Queue=WebService-NFSN>
-
-
-=head1 LICENSE AND COPYRIGHT
-
-Copyright 2007 Christopher J. Madsen
-
-This module is free software; you can redistribute it and/or
-modify it under the same terms as Perl itself. See L<perlartistic>.
-
-
-=head1 DISCLAIMER OF WARRANTY
-
-BECAUSE THIS SOFTWARE IS LICENSED FREE OF CHARGE, THERE IS NO WARRANTY
-FOR THE SOFTWARE, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN
-OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES
-PROVIDE THE SOFTWARE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER
-EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
-ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE SOFTWARE IS WITH
-YOU. SHOULD THE SOFTWARE PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL
-NECESSARY SERVICING, REPAIR, OR CORRECTION.
-
-IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING
-WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR
-REDISTRIBUTE THE SOFTWARE AS PERMITTED BY THE ABOVE LICENCE, BE
-LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL,
-OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE
-THE SOFTWARE (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING
-RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A
-FAILURE OF THE SOFTWARE TO OPERATE WITH ANY OTHER SOFTWARE), EVEN IF
-SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGES.

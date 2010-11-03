@@ -1,9 +1,8 @@
 #! /usr/bin/perl
 #---------------------------------------------------------------------
-# $Id$
-# Copyright 2007 Christopher J. Madsen
-#
 # Build.PL for WebService-NFSN
+#
+# Copyright 2010 Christopher J. Madsen
 #---------------------------------------------------------------------
 
 use strict;
@@ -20,29 +19,9 @@ my $builder = My_Build->new(
   license            => 'perl',
   dist_author        => 'Christopher J. Madsen <perl@cjmweb.net>',
   dist_version_from  => 'lib/WebService/NFSN.pm',
-  requires => {
-      'perl'                  => '5.006',
-      'Carp'                  => 0,
-      'Digest::SHA'           => 0,
-      'Exception::Class'      => 0,
-      'File::Spec'            => 0,
-      'JSON::XS'              => 1,
-      'LWP'                   => 5,
-      'HTTP::Request::Common' => 0,
-      'URI'                   => 1,
-  },
-  recommends => {
-      'Data::Dumper'  => 0,     # Some of the examples use this
-  },
-  build_requires => {
-      'FindBin'       => 0,
-      'File::Spec'    => 0,
-      'Module::Build' => '0.21',
-      'Test::More'    => 0,
-  },
-  create_makefile_pl => 'passthrough',
   dynamic_config     => 0,
-  meta_merge         => { no_index  => { directory => [ 'tools' ] }},
+  # Prerequisites inserted by DistZilla:
+##{ $plugin->get_prereqs ##}
 );
 
 $builder->create_build_script();

@@ -1,11 +1,10 @@
 #---------------------------------------------------------------------
 package WebService::NFSN::Object;
 #
-# Copyright 2007 Christopher J. Madsen
+# Copyright 2010 Christopher J. Madsen
 #
 # Author: Christopher J. Madsen <perl@cjmweb.net>
 # Created:  3 Apr 2007
-# $Id$
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the same terms as Perl itself.
@@ -15,7 +14,7 @@ package WebService::NFSN::Object;
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See either the
 # GNU General Public License or the Artistic License for more details.
 #
-# Base class for NFSN API objects
+# ABSTRACT: Base class for NFSN API objects
 #---------------------------------------------------------------------
 
 use 5.006;
@@ -24,12 +23,12 @@ use strict;
 use warnings;
 use HTTP::Request::Common qw(GET POST PUT);
 use URI ();
-use WebService::NFSN 0.05 ();   # Just make sure it's loaded
+use WebService::NFSN 0.09 ();   # Just make sure it's loaded
 
 #=====================================================================
 # Package Global Variables:
 
-our $VERSION = '0.05';
+our $VERSION = '0.09';
 
 #=====================================================================
 sub get_converter # ($function)
@@ -212,3 +211,13 @@ sub wo_property
 1;
 
 __END__
+
+=for Pod::Loom-omit
+NAME
+VERSION
+CONFIGURATION AND ENVIRONMENT
+INCOMPATIBILITIES
+BUGS AND LIMITATIONS
+AUTHOR
+COPYRIGHT AND LICENSE
+DISCLAIMER OF WARRANTY

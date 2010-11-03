@@ -1,6 +1,6 @@
 #! /usr/bin/perl
 #---------------------------------------------------------------------
-# $Id$
+# 10.credentials.t
 # Copyright 2008 Christopher J. Madsen
 #
 # This program is free software; you can redistribute it and/or modify

@@ -1,8 +1,7 @@
 #---------------------------------------------------------------------
-# $Id$
 package My_Build;
 #
-# Copyright 2008 Christopher J. Madsen
+# Copyright 2010 Christopher J. Madsen
 #
 # Author: Christopher J. Madsen <perl@cjmweb.net>
 #
@@ -21,35 +20,12 @@ use strict;
 use warnings;
 use File::Spec ();
 use Module::Build ();
-
-# Use Module::Build::DistVersion if we can get it:
-BEGIN {
-  eval q{ use Module::Build::DistVersion 0.03;
-          use base 'Module::Build::DistVersion'; };
-  eval q{ use base 'Module::Build'; } if $@;
-  die $@ if $@;
-}
+use base 'Module::Build';
 
 #=====================================================================
 # Package Global Variables:
 
-our $VERSION = '0.01';
-
-#=====================================================================
-sub ACTION_distdir
-{
-  my $self = shift @_;
-
-  print STDERR <<"END" unless $self->isa('Module::Build::DistVersion');
-\a\a\a\n
-WebService-NFSN uses Module::Build::DistVersion to automatically copy
-version numbers to the appropriate places.  You might want to install
-that and re-run Build.PL if you intend to create a distribution.
-\n
-END
-
-  $self->SUPER::ACTION_distdir(@_);
-} # end ACTION_distdir
+our $VERSION = '0.09';
 
 #---------------------------------------------------------------------
 # Explain that JSON 2 can substitute for JSON::XS:
