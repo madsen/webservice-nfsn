@@ -2,9 +2,9 @@
 WebService-NFSN version [%version%], released [%date%]
 
 
-WebService::NFSN is a client library for NearlyFreeSpeech.NET's
-member API (https://api.nearlyfreespeech.net/).  It is only useful
-to people who have websites hosted at NearlyFreeSpeech.NET.
+WebService::NFSN is a client library for NearlyFreeSpeech.NET's member
+API (https://members.nearlyfreespeech.net/wiki/API).  It is only
+useful to people who have websites hosted at NearlyFreeSpeech.NET.
 
 
 

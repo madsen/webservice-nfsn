@@ -272,7 +272,7 @@ API.  It is only useful to people who have websites hosted at
 NearlyFreeSpeech.NET.
 
 Much of this documentation was adapted from the original API
-documentation at L<https://api.nearlyfreespeech.net/>.
+documentation at L<https://members.nearlyfreespeech.net/wiki/API>.
 
 =head1 INTERFACE
 
