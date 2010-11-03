@@ -20,15 +20,19 @@ package WebService::NFSN;
 use 5.006;
 use strict;
 use warnings;
-use Carp qw(carp croak);
+use Carp qw(carp confess croak);
 use Digest::SHA 'sha1_hex';
+use Exporter 'import';
 use LWP::UserAgent ();
+use Try::Tiny;
 use UNIVERSAL 'isa';
 
 #=====================================================================
 # Package Global Variables:
 
 our $VERSION = '0.09';
+
+our @EXPORT_OK = qw(_eval _eval_or_die);
 
 our $saltAlphabet
     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -42,17 +46,41 @@ our @throw_parameters = (
 );
 
 #=====================================================================
+# Helper subs to safely handle string eval without clobbering $@:
+
+sub _eval
+{
+  my ($code) = @_;
+
+  my ($error, $success);
+  {
+    local $@;
+
+    $success = eval "$code ; 'OK'"; ## no critic ProhibitStringyEval
+
+    $error = $@;
+  }
+
+  return if $success && $success eq 'OK';
+
+  return $error || "eval died with false \$\@";
+} # end _eval
+
+sub _eval_or_die
+{
+  my $error = &_eval;           # Pass our @_ to _eval
+
+  confess $error if $error;
+} # end _eval_or_die
+
+#=====================================================================
 # Load a JSON package and define our decode_json function:
 
 BEGIN
 {
-  ## no critic ProhibitStringyEval
-
-  eval "use JSON::XS ();";
-
-  if ($@) {
+  if (_eval "use JSON::XS ()") {
     # Can't find JSON::XS, try JSON (2.0 or later):
-    eval "use JSON qw(decode_json); 1" or die $@;
+    _eval_or_die "use JSON qw(decode_json)";
   } else {
     if ($JSON::XS::VERSION >= 2) {
       *decode_json = \&JSON::XS::decode_json;
@@ -118,8 +146,12 @@ sub new
       close $in or croak("Error closing $filename: $!");
 
       # Parse the JSON object:
-      my $hashRef = eval { decode_json($contents) };
-      croak("Error parsing $filename: $@") if $@;
+      my $hashRef = try {
+        decode_json($contents)
+      } catch {
+        croak("Error parsing $filename: $_");
+      };
+
       croak("$filename did not contain a JSON object")
           unless isa($hashRef, 'HASH');
 
@@ -149,7 +181,7 @@ BEGIN {
 
     my $sub = lc $class;
 
-    eval <<"END CHILD CONSTRUCTOR"; ## no critic ProhibitStringyEval
+    _eval_or_die <<"END CHILD CONSTRUCTOR";
 sub $sub
 {
   require WebService::NFSN::$class;
@@ -158,7 +190,6 @@ sub $sub
 }
 END CHILD CONSTRUCTOR
 
-    die $@ if $@;
   } # end foreach class
 } # end BEGIN
 
@@ -200,7 +231,7 @@ sub make_request
 
   # Throw an exception if there was an error:
   if ($res->is_error) {
-    my $param = eval { decode_json($res->content) };
+    my $param = try { decode_json($res->content) };
 
     # Throw NFSNError if we decoded the response successfully:
     if (isa($param, 'HASH') and defined $param->{error}) {

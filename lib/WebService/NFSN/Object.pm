@@ -23,7 +23,7 @@ use strict;
 use warnings;
 use HTTP::Request::Common qw(GET POST PUT);
 use URI ();
-use WebService::NFSN 0.09 ();   # Just make sure it's loaded
+use WebService::NFSN 0.09 qw(_eval_or_die);
 
 #=====================================================================
 # Package Global Variables:
@@ -47,13 +47,10 @@ sub _define
 {
   my ($class, %p) = @_;
 
-  ## no critic ProhibitStringyEval
-
   #...................................................................
   # Create the object_type method for classifying objects:
 
-  eval "package $class; sub object_type { '$p{type}' }";
-  die $@ if $@;
+  _eval_or_die "package $class; sub object_type { '$p{type}' }";
 
   #...................................................................
   # Create an accessor method for each property:
@@ -66,7 +63,7 @@ sub _define
     foreach my $property (@$properties) {
       my $convert = get_converter($property);
 
-      eval <<"END PROPERTY";
+      _eval_or_die <<"END PROPERTY";
 package $class;
 sub $property
 {
@@ -75,7 +72,6 @@ sub $property
   $convert \$self->${propType}_property('$property' => \@_);
 }
 END PROPERTY
-      die $@ if $@;
     } # end foreach $property
   } # end foreach $propType
 
@@ -93,7 +89,10 @@ END PROPERTY
         $accepted{$_} = 1;
       } # end foreach parameter declaration
 
-      eval <<"END METHOD";
+      # Can't use _eval_or_die here, because we need to capture lexicals:
+      my $err = do {
+        local $@;
+        my $ok = eval <<"END METHOD"; ## no critic ProhibitStringyEval
 package $class;
 our \@_${method}_prototype = (\\\%accepted, \\\@required);
 
@@ -103,8 +102,11 @@ sub $method
 
   $convert \$self->POST_request('$method', \@_${method}_prototype, \@_);
 }
+1;
 END METHOD
-      die $@ if $@;
+        $ok ? undef : ($@ || 'FAILED');
+      }; # end local $@
+      die $err if $err;
     } # end while each method
   } # end if methods
 

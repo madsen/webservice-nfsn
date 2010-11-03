@@ -1,8 +1,10 @@
 Revision history for WebService-NFSN
 
 0.09   NOT
-        - Switched from Digest::SHA1 to Digest::SHA, because the
-          latter became a core module in Perl 5.10.
+	- Cleaned up usage of eval and $@ (using Try::Tiny where possible)
+
+	- Switched from Digest::SHA1 to Digest::SHA, because the
+	  latter became a core module in Perl 5.10.
 
 0.08   September 28, 2008
 	- The constructor now reads login credentials from .nfsn-api
