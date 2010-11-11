@@ -24,8 +24,8 @@ use Carp qw(carp confess croak);
 use Digest::SHA 'sha1_hex';
 use Exporter 'import';
 use LWP::UserAgent ();
+use Scalar::Util 'reftype';
 use Try::Tiny;
-use UNIVERSAL 'isa';
 
 #=====================================================================
 # Package Global Variables:
@@ -72,6 +72,11 @@ sub _eval_or_die
 
   confess $error if $error;
 } # end _eval_or_die
+
+#---------------------------------------------------------------------
+# Helper sub to identify a hashref:
+
+sub _is_hash { (reftype($_[0]) || '') eq 'HASH' }
 
 #=====================================================================
 # Load a JSON package and define our decode_json function:
@@ -153,7 +158,7 @@ sub new
       };
 
       croak("$filename did not contain a JSON object")
-          unless isa($hashRef, 'HASH');
+          unless _is_hash($hashRef);
 
       croak(qq'$filename did not define "login"')
           unless defined ($login  = $hashRef->{login});
@@ -234,7 +239,7 @@ sub make_request
     my $param = try { decode_json($res->content) };
 
     # Throw NFSNError if we decoded the response successfully:
-    if (isa($param, 'HASH') and defined $param->{error}) {
+    if (_is_hash($param) and defined $param->{error}) {
       # If bad timestamp, list the dates:
       my $debug = delete $param->{debug};
       if ($debug and

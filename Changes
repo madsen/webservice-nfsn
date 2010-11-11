@@ -1,6 +1,8 @@
 Revision history for WebService-NFSN
 
 0.09   NOT
+	- Use Scalar::Util's reftype instead of UNIVERSAL::isa
+
 	- Cleaned up usage of eval and $@ (using Try::Tiny where possible)
 
 	- Changed examples/nfsn.pl to get credentials from .nfsn-api
