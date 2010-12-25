@@ -23,12 +23,12 @@ use strict;
 use warnings;
 use HTTP::Request::Common qw(GET POST PUT);
 use URI ();
-use WebService::NFSN 0.09 qw(_eval_or_die);
+use WebService::NFSN 0.10 qw(_eval_or_die);
 
 #=====================================================================
 # Package Global Variables:
 
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 
 #=====================================================================
 sub get_converter # ($function)
@@ -50,7 +50,7 @@ sub _define
   #...................................................................
   # Create the object_type method for classifying objects:
 
-  _eval_or_die "package $class; sub object_type { '$p{type}' }";
+  my $code = "package $class;\nsub object_type { '$p{type}' }\n";
 
   #...................................................................
   # Create an accessor method for each property:
@@ -63,13 +63,10 @@ sub _define
     foreach my $property (@$properties) {
       my $convert = get_converter($property);
 
-      _eval_or_die <<"END PROPERTY";
-package $class;
+      $code .= <<"END PROPERTY";
 sub $property
 {
-  my \$self = shift \@_;
-
-  $convert \$self->${propType}_property('$property' => \@_);
+  $convert shift->${propType}_property('$property' => \@_);
 }
 END PROPERTY
     } # end foreach $property
@@ -89,27 +86,23 @@ END PROPERTY
         $accepted{$_} = 1;
       } # end foreach parameter declaration
 
-      # Can't use _eval_or_die here, because we need to capture lexicals:
-      my $err = do {
-        local $@;
-        my $ok = eval <<"END METHOD"; ## no critic ProhibitStringyEval
-package $class;
-our \@_${method}_prototype = (\\\%accepted, \\\@required);
+      # Store method prototype into package variable:
+      { no strict 'refs'; ## no critic ProhibitNoStrict
+        @{ sprintf '%s::_%s_prototype', $class, $method }
+            = ($method, \%accepted, \@required) }
 
+      # Define the method:
+      $code .= <<"END METHOD";
+our \@_${method}_prototype;
 sub $method
 {
-  my \$self = shift \@_;
-
-  $convert \$self->POST_request('$method', \@_${method}_prototype, \@_);
+  $convert shift->POST_request(\@_${method}_prototype, \@_);
 }
-1;
 END METHOD
-        $ok ? undef : ($@ || 'FAILED');
-      }; # end local $@
-      die $err if $err;
     } # end while each method
   } # end if methods
 
+  _eval_or_die $code;
 } # end _define
 
 #=====================================================================

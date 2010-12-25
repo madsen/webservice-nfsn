@@ -30,7 +30,7 @@ use Try::Tiny;
 #=====================================================================
 # Package Global Variables:
 
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 
 our @EXPORT_OK = qw(_eval _eval_or_die);
 
@@ -70,7 +70,16 @@ sub _eval_or_die
 {
   my $error = &_eval;           # Pass our @_ to _eval
 
-  confess $error if $error;
+  return unless $error;
+
+  # Number lines in eval'd code:
+  my $code = shift;
+  my $lineNum = ($code =~ tr/\n//);
+  my $fmt = '%' . length($lineNum) . 'd: ';
+  $lineNum = 0;
+  $code =~ s/^/sprintf $fmt, ++$lineNum/gem;
+
+  confess "$code\n$error";
 } # end _eval_or_die
 
 #---------------------------------------------------------------------
@@ -182,11 +191,13 @@ BEGIN {
   # Create access methods for each object type:
   #   (Member is not auto-generated, because it has a default value)
 
+  my $code = '';
+
   foreach my $class (qw(Account DNS Email Site)) {
 
     my $sub = lc $class;
 
-    _eval_or_die <<"END CHILD CONSTRUCTOR";
+    $code .= <<"END CHILD CONSTRUCTOR";
 sub $sub
 {
   require WebService::NFSN::$class;
@@ -196,6 +207,8 @@ sub $sub
 END CHILD CONSTRUCTOR
 
   } # end foreach class
+
+  _eval_or_die $code;
 } # end BEGIN
 
 #---------------------------------------------------------------------
