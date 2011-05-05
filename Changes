@@ -1,6 +1,6 @@
 Revision history for WebService-NFSN
 
-0.10   NOT
+0.10   May 5, 2011
 	- If you have LWP 6.00 or better, WebService::NFSN will now
 	  automatically verify the server's certificate to protect you
 	  against man-in-the-middle attacks.
