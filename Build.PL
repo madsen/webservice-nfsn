@@ -20,7 +20,8 @@ my $builder = My_Build->new(
   dist_author        => 'Christopher J. Madsen <perl@cjmweb.net>',
   dist_version_from  => 'lib/WebService/NFSN.pm',
   dynamic_config     => 0,
-  # Prerequisites inserted by DistZilla:
+  # Automatically inserted by DistZilla:
+##{ $plugin->get_default('share_dir') ##}
 ##{ $plugin->get_prereqs ##}
 );
 

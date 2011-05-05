@@ -23,6 +23,7 @@ use warnings;
 use Carp qw(carp confess croak);
 use Digest::SHA 'sha1_hex';
 use Exporter 'import';
+use File::ShareDir 'dist_file';
 use LWP::UserAgent ();
 use Scalar::Util 'reftype';
 use Try::Tiny;
@@ -37,7 +38,14 @@ our @EXPORT_OK = qw(_eval _eval_or_die);
 our $saltAlphabet
     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-our $ua = LWP::UserAgent->new(agent => "WebService-NFSN/$VERSION ");
+our $ua = LWP::UserAgent->new(
+  agent => "WebService-NFSN/$VERSION ",
+  # If LWP 6, verify the server's cert using NFSN's internal CA cert:
+  ssl_opts => {
+    verify_hostname => 1,
+    SSL_ca_file => dist_file(qw(WebService-NFSN nfsn-ca.crt)),
+  },
+);
 
 our @throw_parameters = (
   show_trace     => 1,
@@ -487,6 +495,10 @@ The home directory is specified by C<$ENV{HOME}>.
 L<Digest::SHA>, L<Exception::Class>, L<JSON::XS>, L<LWP> (requires
 C<https> support), and L<URI>.  These are all available from CPAN.
 
+You need at least LWP version 6.00 in order to verify the server's
+certificate.  Earlier versions of LWP are vulnerable to a
+man-in-the-middle attack.  See L<"BUGS AND LIMITATIONS">.
+
 
 =head1 INCOMPATIBILITIES
 
@@ -495,12 +507,10 @@ None reported.
 
 =head1 BUGS AND LIMITATIONS
 
-The server's SSL certificate is not verified, so WebService::NFSN is
+The server's SSL certificate is not verified if your LWP is less than
+version 6.00, leaving WebService::NFSN
 vulnerable to a man-in-the-middle attack.  However, due to the design
 of NFSN's API, the attacker should only be able to monitor/suppress
 your queries and monitor/alter the responses.  The attacker should not
 be able to send (properly authenticated) altered requests to the real
 NFSN server.
-
-If someone knows how to have LWP verify the server's certificate,
-please let me know.

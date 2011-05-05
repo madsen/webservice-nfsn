@@ -16,6 +16,7 @@ lib/WebService/NFSN/Email.pm
 lib/WebService/NFSN/Member.pm
 lib/WebService/NFSN/Object.pm
 lib/WebService/NFSN/Site.pm
+share/nfsn-ca.crt
 t/00.load.t
 t/10.credentials.t
 t/release-perlcritic.t
