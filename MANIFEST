@@ -9,6 +9,7 @@ examples/accounts.pl
 examples/changeTTL.pl
 examples/dns.pl
 examples/nfsn.pl
+inc/My_Build.pm
 lib/WebService/NFSN.pm
 lib/WebService/NFSN/Account.pm
 lib/WebService/NFSN/DNS.pm
@@ -22,4 +23,3 @@ t/10.credentials.t
 t/release-perlcritic.t
 t/release-pod-coverage.t
 t/release-pod-syntax.t
-tools/My_Build.pm

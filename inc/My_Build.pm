@@ -1,5 +1,5 @@
 #---------------------------------------------------------------------
-package My_Build;
+package inc::My_Build;
 #
 # Copyright 2010 Christopher J. Madsen
 #
@@ -18,14 +18,13 @@ package My_Build;
 
 use strict;
 use warnings;
-use File::Spec ();
-use Module::Build ();
-use base 'Module::Build';
+
+use parent 'Module::Build';
 
 #=====================================================================
 # Package Global Variables:
 
-our $VERSION = '0.09';
+our $VERSION = '1.00';
 
 #---------------------------------------------------------------------
 # Explain that JSON 2 can substitute for JSON::XS:

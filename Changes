@@ -2,6 +2,7 @@ Revision history for WebService-NFSN
 
 1.00   NOT
 	- Require libwww-perl 6.00
+	- Use parent instead of base
 
 0.10   May 5, 2011
 	- If you have LWP 6.00 or better, WebService::NFSN will now

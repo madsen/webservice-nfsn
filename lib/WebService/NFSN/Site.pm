@@ -21,12 +21,12 @@ use 5.006;
 use strict;
 use warnings;
 
-use base 'WebService::NFSN::Object';
+use parent 'WebService::NFSN::Object';
 
 #=====================================================================
 # Package Global Variables:
 
-our $VERSION = '0.09';
+our $VERSION = '1.00';
 
 #=====================================================================
 BEGIN {

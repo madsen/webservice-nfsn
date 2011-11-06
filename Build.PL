@@ -8,13 +8,9 @@
 use strict;
 use warnings;
 
-# Make sure we're using My_Build from our distribution:
-use FindBin;
-use lib "$FindBin::Bin/tools";
+use inc::My_Build;           # Our customized version of Module::Build
 
-use My_Build;          # Our customized version of Module::Build
-
-my $builder = My_Build->new(
+my $builder = inc::My_Build->new(
   module_name        => 'WebService::NFSN',
   license            => 'perl',
   dist_author        => 'Christopher J. Madsen <perl@cjmweb.net>',
