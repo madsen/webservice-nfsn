@@ -22,6 +22,7 @@ use File::Spec ();
 use FindBin qw($Bin);
 
 BEGIN {
+  # RECOMMEND PREREQ: File::Temp
   eval "use File::Temp qw(tempdir)";
   plan skip_all => "File::Temp required" if $@;
 

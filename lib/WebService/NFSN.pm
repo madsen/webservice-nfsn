@@ -24,14 +24,14 @@ use Carp qw(carp confess croak);
 use Digest::SHA 'sha1_hex';
 use Exporter 'import';
 use File::ShareDir 'dist_file';
-use LWP::UserAgent ();
-use Scalar::Util 'reftype';
-use Try::Tiny;
+use LWP::UserAgent 6 ();
+use Scalar::Util 1.01 'reftype';
+use Try::Tiny 0.04;
 
 #=====================================================================
 # Package Global Variables:
 
-our $VERSION = '0.10';
+our $VERSION = '1.00';
 
 our @EXPORT_OK = qw(_eval _eval_or_die);
 
@@ -497,20 +497,9 @@ C<https> support), and L<URI>.  These are all available from CPAN.
 
 You need at least LWP version 6.00 in order to verify the server's
 certificate.  Earlier versions of LWP are vulnerable to a
-man-in-the-middle attack.  See L<"BUGS AND LIMITATIONS">.
+man-in-the-middle attack.
 
 
 =head1 INCOMPATIBILITIES
 
 None reported.
-
-
-=head1 BUGS AND LIMITATIONS
-
-The server's SSL certificate is not verified if your LWP is less than
-version 6.00, leaving WebService::NFSN
-vulnerable to a man-in-the-middle attack.  However, due to the design
-of NFSN's API, the attacker should only be able to monitor/suppress
-your queries and monitor/alter the responses.  The attacker should not
-be able to send (properly authenticated) altered requests to the real
-NFSN server.

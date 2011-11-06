@@ -1,5 +1,8 @@
 Revision history for WebService-NFSN
 
+1.00   NOT
+	- Require libwww-perl 6.00
+
 0.10   May 5, 2011
 	- If you have LWP 6.00 or better, WebService::NFSN will now
 	  automatically verify the server's certificate to protect you

@@ -22,13 +22,13 @@ use Carp;
 use strict;
 use warnings;
 use HTTP::Request::Common qw(GET POST PUT);
-use URI ();
+use URI 1.00 ();
 use WebService::NFSN 0.10 qw(_eval_or_die);
 
 #=====================================================================
 # Package Global Variables:
 
-our $VERSION = '0.10';
+our $VERSION = '1.00';
 
 #=====================================================================
 sub get_converter # ($function)
