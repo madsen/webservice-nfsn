@@ -1,6 +1,6 @@
 Revision history for WebService-NFSN
 
-1.01   NOT
+1.01   November 20, 2011
 	- Fix possible installation problem:
 
 	    parent needs to be in configure_requires
