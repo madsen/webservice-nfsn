@@ -1,7 +1,13 @@
 Revision history for WebService-NFSN
 
+1.01   NOT
+	- Fix possible installation problem:
+
+	    parent needs to be in configure_requires
+
 1.00   November 11, 2011
 	- Require libwww-perl 6.00
+
 	- Use parent instead of base
 
 0.10   May 5, 2011
