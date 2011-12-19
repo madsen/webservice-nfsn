@@ -328,8 +328,9 @@ documentation at L<https://members.nearlyfreespeech.net/wiki/API>.
 =item C<< $nfsn = WebService::NFSN->new( [$USER, $API_KEY] ) >>
 
 This constructs a new API manager object.  C<$USER> is your NFSN
-member login.  You can get your C<$API_KEY> by making a Secure Support
-Request at L<https://members.nearlyfreespeech.net/support/request>.
+member login.  You can get your C<$API_KEY> by making a free
+Assistance Request at L<https://members.nearlyfreespeech.net/support/request>.
+(Select "Request an API key" on that page.)
 
 If you call new without parameters, it will look for a file named
 F<.nfsn-api> in the current directory and (if not found there) in your
