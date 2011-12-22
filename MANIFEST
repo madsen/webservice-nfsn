@@ -19,8 +19,8 @@ lib/WebService/NFSN/Object.pm
 lib/WebService/NFSN/Site.pm
 share/nfsn-ca.crt
 t/00-all_prereqs.t
-t/00.load.t
-t/10.credentials.t
+t/00-load.t
+t/10-credentials.t
 t/release-perlcritic.t
 t/release-pod-coverage.t
 t/release-pod-syntax.t
