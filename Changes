@@ -1,6 +1,6 @@
 Revision history for WebService-NFSN
 
-1.02   NOT
+1.02   December 21, 2011
 	- Require correct version of Exporter
 
 	- Fix possible installation problem:
