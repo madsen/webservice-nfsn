@@ -3,6 +3,10 @@ Revision history for WebService-NFSN
 1.02   NOT
 	- Require correct version of Exporter
 
+	- Fix possible installation problem:
+
+	    Module::Build needs to be at least 0.36
+
 1.01   November 20, 2011
 	- Fix possible installation problem:
 
