@@ -41,6 +41,18 @@ sub set_perm
 } # end set_perm
 
 #---------------------------------------------------------------------
+sub confirm
+{
+  my $prompt = shift;
+
+  $prompt .= " [y/N]? ";
+
+  require IO::Prompt;
+
+  IO::Prompt::prompt($prompt, -yes, -tty);
+} # end confirm
+
+#---------------------------------------------------------------------
 sub read_password
 {
   my $user = shift;
@@ -108,6 +120,31 @@ if (@ARGV) {
     }
 
     @$hosts = sort @$hosts if $configChanged;
+  } elsif ($cmd =~ /^(?: rm | del(?:ete)? )$/ix) {
+    my $user   = shift;
+    my $domain = shift;
+    if (@ARGV) {
+      my $hosts = $config->{users}{$user}{domains}{$domain}
+          or die "User '$user' does not have domain '$domain'\n";
+      my %delete = map { $_ => 1 } @ARGV;
+
+      @$hosts = grep { $configChanged ||= $delete{$_}; !$delete{$_} } @$hosts;
+    } # end if deleting specific hosts
+    elsif (defined $domain) {
+      my $domains = $config->{users}{$user}{domains};
+      $domains->{$domain}
+          or die "User '$user' does not have domain '$domain'\n";
+      exit unless confirm("Remove all hosts in $domain from $user");
+      delete $domains->{$domain};
+      $configChanged = 1;
+    } else {
+      die "No user specified\n" unless $user;
+      my $users = $config->{users};
+      $users->{$user} or die "No user '$user'\n";
+      exit unless confirm("Remove user $user");
+      delete $users->{$user};
+      $configChanged = 1;
+    }
   } else {
     die qq'Unknown command "$cmd"\n';
   }
