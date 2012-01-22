@@ -8,6 +8,7 @@ README
 examples/accounts.pl
 examples/changeTTL.pl
 examples/dns.pl
+examples/gdipconf.pl
 examples/gdipupdt.cgi
 examples/nfsn.pl
 inc/My_Build.pm

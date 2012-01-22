@@ -24,7 +24,7 @@ use WebService::NFSN 0.08;      # load credentials from ~/.nfsn-api
 use YAML::Tiny qw(LoadFile);
 
 $ENV{HOME}      = '/home/protected'; # location of ~/.nfsn-api
-our $configFile = '/home/protected/gdiupdt.yaml';
+our $configFile = '/home/protected/gdiupdt/config.yaml';
 
 our $q = CGI::Minimal->new;
 our $config;
@@ -176,7 +176,7 @@ sub handle_update
     my $user = $config->{users}{$p{user}};
     if ($user) {
       die "User $p{user} has no password\n" unless $user->{password};
-      die "User $p{user} has no domains\n"  unless %{ $user->{domains} };
+      die "User $p{user} has no domains\n" unless 'HASH' eq ref $user->{domains};
     }
 
     unless($user and md5_hex("$user->{password}.$p{salt}") eq $p{pass}) {
