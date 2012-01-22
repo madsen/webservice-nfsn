@@ -84,18 +84,18 @@ unless ($config->{secret_key}) {
 if (@ARGV) {
   my $cmd = shift;
 
-  if ($cmd =~ /^(?: addu(?:se?rs?)? | pass(?:w(?:or)?d)? )$/ix) {
+  if ($cmd =~ /^(?: pass(?:w(?:or)?d)? )$/ix) {
     foreach my $user (@ARGV) {
+      warn("No user '$user'\n"), next unless $config->{users}{$user};
       $config->{users}{$user}{password} = read_password($user);
-      $config->{users}{$user}{domains} ||= {};
       $configChanged = 1;
     }
-  } elsif ($cmd =~ /^(?: addh(?:o?sts?)? )$/ix) {
+  } elsif ($cmd =~ /^(?: add )$/ix) {
     my $user   = shift;
     my $domain = shift;
-    die "No user '$user'\n" unless $config->{users}{$user};
     die "'$domain' doesn't look like a domain\n" unless $domain =~ /\./;
     die "No hosts specifed for $user in $domain\n" unless @ARGV;
+    $config->{users}{$user}{password} ||= read_password($user);
     my $hosts = ($config->{users}{$user}{domains}{$domain} ||= []);
 
     my %have = map { $_ => 1 } @$hosts;
