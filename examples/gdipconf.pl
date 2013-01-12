@@ -22,9 +22,10 @@ use YAML::Tiny qw(LoadFile DumpFile);
 
 my $running_at_NFSN = (($ENV{NFSN_SITE_ROOT} || '') eq '/home/');
 
-my $configDir;
+my ($apiKey, $configDir);
 
-$configDir = '/home/protected/gdipupdt' if $running_at_NFSN;
+$configDir = '/home/protected/gdipupdt'  if $running_at_NFSN;
+$apiKey    = '/home/protected/.nfsn-api' if $running_at_NFSN;
 
 die "You need to edit $0 & gdipupdt.cgi and hardcode \$configDir\n"
     unless $configDir;
@@ -67,6 +68,25 @@ sub read_password
 } # end read_password
 
 #=====================================================================
+if ($apiKey and not -e $apiKey) {
+  print <<'END API';
+If you haven't already, you need to sign up for a NFSN API key by going to
+  https://members.nearlyfreespeech.net/support/assist?tag=apikey
+and filling out that form.
+
+END API
+
+  require IO::Prompt;
+  my $user = IO::Prompt::prompt("Your NFSN member login: ", -tty);
+  my $key  = IO::Prompt::prompt("Your NFSN API key: ",      -tty);
+
+  print "Creating $apiKey...\n";
+  open(my $out, '>', $apiKey) or die "Can't create $apiKey: $!";
+  print $out qq'{ "login": "$user",  "api-key": "$key" }\n';
+  close $out;
+  set_perm($apiKey, 0640) if $running_at_NFSN;
+}
+
 unless (-d $configDir) {
   print "Creating $configDir...\n";
   mkdir $configDir or die "mkdir $configDir: $!";
