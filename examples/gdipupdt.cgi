@@ -20,14 +20,19 @@ use warnings;
 
 use CGI::Minimal;
 use Digest::MD5 qw(md5_hex);
+use Fcntl qw(O_WRONLY O_CREAT O_EXCL);
 use WebService::NFSN 0.08;      # load credentials from ~/.nfsn-api
 use YAML::Tiny qw(LoadFile);
 
 $ENV{HOME}      = '/home/protected'; # location of ~/.nfsn-api
-our $configFile = '/home/protected/gdiupdt/config.yaml';
+our $configDir  = '/home/protected/gdiupdt';
+
+our $stateDir   = "$configDir/states";
+our $configFile = "$configDir/config.yaml";
 
 our $q = CGI::Minimal->new;
 our $config;
+our $timeout = 60;              # Time salt remains valid
 
 #---------------------------------------------------------------------
 sub try (&)
@@ -62,6 +67,17 @@ sub try (&)
 } # end try
 
 #---------------------------------------------------------------------
+sub cleanup_state
+{
+  my $maxAge = $timeout / 80000.0;
+
+  # Remove old salts:
+  for my $fn (glob("$stateDir/*")) {
+    unlink $fn if -M $fn > $maxAge;
+  }
+} # end cleanup_state
+
+#---------------------------------------------------------------------
 sub send_error
 {
   my $msg = shift;
@@ -92,6 +108,8 @@ Error: Problem with server configuration
 </html>
 END ERROR
 
+  cleanup_state;
+
   exit 1;
 } # end send_error
 
@@ -106,7 +124,6 @@ Content-Type: text/html; charset=ISO-8859-1
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>
 GnuDIP Update Server
 </title>
@@ -119,15 +136,17 @@ END HEADER
   print <<"END BODY";
 </head>
 <body>
-<h1>
+<h2>
 GnuDIP Update Server
-</h1>
+</h2>
 <p style="text-align: center">
 $response
 </p>
 </body>
 </html>
 END BODY
+
+  cleanup_state;
 
   exit;
 } # end send_response
@@ -168,7 +187,7 @@ sub handle_update
     send_response("Error: Invalid signature", retc => 1);
   } # end unless signature matches
 
-  if ($p{time} + 60 < time) {
+  if ($p{time} + $timeout < time) {
     send_response('Error: Salt value too old', retc => 1);
   } # end if time is too old
 
@@ -179,7 +198,10 @@ sub handle_update
       die "User $p{user} has no domains\n" unless 'HASH' eq ref $user->{domains};
     }
 
-    unless($user and md5_hex("$user->{password}.$p{salt}") eq $p{pass}) {
+    unless ($user and md5_hex("$user->{password}.$p{salt}") eq $p{pass}
+            # Protect againt replay attacks.  Salt can only be used once:
+            and sysopen(my $test, "$stateDir/$p{sign}",
+                       O_WRONLY|O_CREAT|O_EXCL, 0664)) {
       send_response('Error: Invalid login attempt', retc => 1);
     }
 

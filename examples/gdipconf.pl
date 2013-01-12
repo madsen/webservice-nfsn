@@ -26,7 +26,8 @@ my $configDir;
 
 $configDir = '/home/protected/gdipupdt' if $running_at_NFSN;
 
-die "You need to edit $0 and hardcode \$configDir\n" unless $configDir;
+die "You need to edit $0 & gdipupdt.cgi and hardcode \$configDir\n"
+    unless $configDir;
 
 #---------------------------------------------------------------------
 my $web_gid;
@@ -70,6 +71,13 @@ unless (-d $configDir) {
   print "Creating $configDir...\n";
   mkdir $configDir or die "mkdir $configDir: $!";
   set_perm($configDir, 0750) if $running_at_NFSN;
+}
+
+my $stateDir = "$configDir/states";
+unless (-d $stateDir) {
+  print "Creating $stateDir...\n";
+  mkdir $stateDir or die "mkdir $stateDir: $!";
+  set_perm($stateDir, 0770) if $running_at_NFSN;
 }
 
 my $configFile = "$configDir/config.yaml";
@@ -156,7 +164,7 @@ exit unless $configChanged;
 print "Saving $configFile...\n";
 umask 027;
 DumpFile("$configFile.new", $config);
-my ($gid, $mode) = (stat "$configFile.new")[5,2];
+my ($gid, $mode) = (stat $configFile)[5,2];
 chown -1, $gid, "$configFile.new" or die "Can't chown $configFile.new: $!";
 chmod $mode, "$configFile.new"    or die "Can't chmod $configFile.new: $!";
 rename "$configFile.new", $configFile or die "Can't replace $configFile: $!";
