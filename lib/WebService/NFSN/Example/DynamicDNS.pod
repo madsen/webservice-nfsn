@@ -1,0 +1,72 @@
+=head1 NAME
+
+WebService::NFSN::Example::DynamicDNS - DynamicDNS client for NFSN's API
+
+=head1 VERSION
+
+This document describes the examples in {{$dist}} version {{$dist_version}},
+released {{$date}}.
+
+=head1 SYNOPSIS
+
+=over 4
+
+=item 1.
+
+Copy F<gdipconf.pl> & F<gdipupdt.cgi> from F<examples/> to your web server
+
+=item 2.
+
+Run C<gdipconf.pl add USER DOMAIN HOST>
+
+=item 3.
+
+Point a GnuDIP 2 client at gdipupdt.cgi
+
+=back
+
+
+=head1 DESCRIPTION
+
+If you have a domain that uses NearlyFreeSpeech.NET DNS, you might
+want to add an A record for your home (or other) computer.  NFSN does
+not support any standard Dynamic DNS clients, but it's possible to
+update your DNS records using their API.
+
+In the F<examples> directory of the WebService-NFSN distribution,
+you'll find F<gdipupdt.cgi>, a server for the GnuDIP 2 Dynamic DNS
+protocol, and F<gdipconf.pl>, a command-line utility for configuring
+it.  I chose the GnuDIP 2 protocol because it was the only one I could
+find that offered decent security without requiring SSL (which wasn't
+available at NFSN when I wrote most of the code).
+
+=head1 INSTALLATION
+
+The normal URL for GnuDIP updates is
+C<http://yourserver/gnudip/cgi-bin/gnudip.cgi>.
+
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+F<gdipconf.pl> uses the C<NFSN_SITE_ROOT> environment variable to
+determine if it's running on NFSN's servers.  If not, you must edit
+both F<gdipconf.pl> and F<gdipupdt.cgi> and hard-code C<$configDir> to
+an appropriate value for your server.  You must also set C<$ENV{HOME}>
+in F<gdipupdt.cgi> to the location of the F<.nfsn-api> file containing
+your NFSN API credentials.
+
+F<gdipupdt.cgi> reads its configuration from C<"$configDir/config.yaml">
+keeps track of used salts in the directory C<"$configDir/states">,
+and reads your NFSN API key from C<"$ENV{HOME}/.nfsn-api">.
+C<$configDir> defaults to F</home/protected>, the correct value if
+you're running the server on a NFSN site.  If not, you'll need to edit
+it and provide the correct values for your server.
+
+
+=head1 SEE ALSO
+
+The GnuDIP Dynamic DNS homepage (L<http://gnudip2.sourceforge.net/>)
+contains links to some clients that support the GnuDIP protocol.
+
+=for Pod::Loom-omit
+INCOMPATIBILITIES

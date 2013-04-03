@@ -1,5 +1,8 @@
 Revision history for WebService-NFSN
 
+1.03   NOT
+	- Include example scripts for updating Dynamic IP
+
 1.02   December 21, 2011
 	- Require correct version of Exporter
 

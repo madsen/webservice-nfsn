@@ -16,6 +16,7 @@ lib/WebService/NFSN.pm
 lib/WebService/NFSN/Account.pm
 lib/WebService/NFSN/DNS.pm
 lib/WebService/NFSN/Email.pm
+lib/WebService/NFSN/Example/DynamicDNS.pod
 lib/WebService/NFSN/Member.pm
 lib/WebService/NFSN/Object.pm
 lib/WebService/NFSN/Site.pm
