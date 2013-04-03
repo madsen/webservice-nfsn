@@ -133,6 +133,8 @@ if (@ARGV) {
   } elsif ($cmd =~ /^(?: add )$/ix) {
     my $user   = shift;
     my $domain = shift;
+    die "Usage: $0 add USER DOMAIN HOST [HOST...]\n"
+        unless defined $user and defined $domain;
     die "'$domain' doesn't look like a domain\n" unless $domain =~ /\./;
     die "No hosts specifed for $user in $domain\n" unless @ARGV;
     $config->{users}{$user}{password} ||= read_password($user);
