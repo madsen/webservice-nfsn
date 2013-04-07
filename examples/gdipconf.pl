@@ -49,9 +49,9 @@ sub confirm
 
   $prompt .= " [y/N]? ";
 
-  require IO::Prompt;
+  require IO::Prompter;
 
-  IO::Prompt::prompt($prompt, -yes, -tty);
+  IO::Prompter::prompt($prompt, -yes, -stdio);
 } # end confirm
 
 #---------------------------------------------------------------------
@@ -60,9 +60,10 @@ sub read_password
   my $user = shift;
 
   require Digest::MD5;
-  require IO::Prompt;
+  require IO::Prompter;
 
-  my $password = IO::Prompt::prompt("Password for $user: ", -e => '*', -tty);
+  my $password = IO::Prompter::prompt("Password for $user: ",
+                                      -echo => '*', -stdio);
 
   Digest::MD5::md5_hex($password);
 } # end read_password
@@ -76,9 +77,9 @@ and filling out that form.
 
 END API
 
-  require IO::Prompt;
-  my $user = IO::Prompt::prompt("Your NFSN member login: ", -tty);
-  my $key  = IO::Prompt::prompt("Your NFSN API key: ",      -tty);
+  require IO::Prompter;
+  my $user = IO::Prompter::prompt("Your NFSN member login: ", -stdio);
+  my $key  = IO::Prompter::prompt("Your NFSN API key: ",      -stdio);
 
   print "Creating $apiKey...\n";
   open(my $out, '>', $apiKey) or die "Can't create $apiKey: $!";
