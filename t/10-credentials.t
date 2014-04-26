@@ -29,6 +29,14 @@ BEGIN {
   plan tests => 28;
 }
 
+use Test::File::ShareDir(
+  -root => "$FindBin::Bin/../",
+  -share => {
+    -module => { 'WebService::NFSN' => 'share/' },
+    -dist   => { 'WebService-NFSN'  => 'share/' },
+  }
+);
+
 use WebService::NFSN ();
 
 #---------------------------------------------------------------------
