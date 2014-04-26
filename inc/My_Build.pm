@@ -24,7 +24,7 @@ use parent 'Module::Build';
 #=====================================================================
 # Package Global Variables:
 
-our $VERSION = '1.00';
+our $VERSION = '1.02';
 
 #---------------------------------------------------------------------
 # Explain that JSON 2 can substitute for JSON::XS:
