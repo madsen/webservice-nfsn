@@ -17,7 +17,6 @@ my $builder = inc::My_Build->new(
   dist_version_from  => 'lib/WebService/NFSN.pm',
   dynamic_config     => 0,
   # Automatically inserted by DistZilla:
-##{ $plugin->get_default('share_dir') ##}
 ##{ $plugin->get_prereqs ##}
 );
 

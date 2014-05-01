@@ -23,7 +23,6 @@ use warnings;
 use Carp qw(carp confess croak);
 use Digest::SHA 'sha1_hex';
 use Exporter 5.57 'import';     # exported import method
-use File::ShareDir 'dist_file';
 use LWP::UserAgent 6 ();
 use Scalar::Util 1.01 'reftype';
 use Try::Tiny 0.04;
@@ -31,7 +30,7 @@ use Try::Tiny 0.04;
 #=====================================================================
 # Package Global Variables:
 
-our $VERSION = '1.02';
+our $VERSION = '1.03';
 
 our @EXPORT_OK = qw(_eval _eval_or_die);
 
@@ -40,10 +39,8 @@ our $saltAlphabet
 
 our $ua = LWP::UserAgent->new(
   agent => "WebService-NFSN/$VERSION ",
-  # If LWP 6, verify the server's cert using NFSN's internal CA cert:
   ssl_opts => {
     verify_hostname => 1,
-    SSL_ca_file => dist_file(qw(WebService-NFSN nfsn-ca.crt)),
   },
 );
 
