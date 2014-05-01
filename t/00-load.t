@@ -6,6 +6,15 @@ use warnings;
 use strict;
 
 use Test::More tests => 6;
+use FindBin qw($Bin);
+use Test::File::ShareDir(
+  -root => "$FindBin::Bin/../",
+  -share => {
+    -module => { 'WebService::NFSN' => 'share/' },
+    -dist   => { 'WebService-NFSN'  => 'share/' },
+  }
+);
+
 
 BEGIN {
 use_ok( 'WebService::NFSN' );
