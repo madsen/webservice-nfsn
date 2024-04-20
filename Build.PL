@@ -8,6 +8,9 @@
 use strict;
 use warnings;
 
+use FindBin;
+use lib $FindBin::RealBin;
+
 use inc::My_Build;           # Our customized version of Module::Build
 
 my $builder = inc::My_Build->new(
