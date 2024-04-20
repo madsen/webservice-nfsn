@@ -32,7 +32,7 @@ use parent 'WebService::NFSN::Object';
 BEGIN {
   __PACKAGE__->_define(
     type => 'dns',
-    ro   => [qw(serial)],
+    ro   => [qw(serial sync)],
     rw   => [qw(expire minTTL refresh retry)],
     methods => {
       addRR          => [qw(name type data ttl?)],
@@ -167,6 +167,15 @@ The serial is maintained by the DNS system, and cannot be directly
 modified. You may, however, update the serial number in order to cause
 other nameservers to refresh any cached data in it by calling the
 C<updateSerial> method.
+
+=item C<< $dns->sync() >>
+
+Returns the fraction of NFSN's DNS servers that are up-to-date for this domain.
+This will be 1 if all servers are up-to-date, or 0 if no servers are up-to-date with a change you just made.
+A number between 0 and 1 (e.g. 0.5) indicates that some but not all servers are up-to-date.
+After making a DNS change, you may poll this property every few seconds
+to determine when it is safe to expect that NFSN's DNS responses will include that change.
+(But this does not consider third-party DNS servers that may have cached the previous record.)
 
 =back
 

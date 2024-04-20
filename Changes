@@ -1,6 +1,7 @@
 Revision history for WebService-NFSN
 
 1.04   NOT
+	- Added the sync property to DNS objects
 	- Use FindBin to locate inc::My_Build in Build.PL
 
 1.03   2014-04-30
